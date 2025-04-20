@@ -1,0 +1,54 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import ProModal from "@/components/ProModal";
+import { isProUser, setProUser } from "@/lib/paymentStatus";
+
+export default function Dashboard() {
+  const [pro, setPro] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    setPro(isProUser());
+  }, []);
+
+  const handlePaymentConfirm = () => {
+    setProUser();
+    setPro(true);
+    alert("Payment marked as complete. We'll verify and unlock full access soon.");
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-4">Social Media Caption Generator</h1>
+
+      {!pro && (
+        <button
+          onClick={() => setShowModal(true)}
+          className="mb-4 bg-indigo-600 text-white px-4 py-2 rounded-xl"
+        >
+          Unlock Pro
+        </button>
+      )}
+
+      {showModal && <ProModal onConfirmPayment={handlePaymentConfirm} />}
+
+      <div className="bg-white p-4 rounded-xl shadow">
+        <textarea
+          rows={4}
+          placeholder="Enter your topic or keywords..."
+          className="w-full border border-gray-300 p-2 rounded-md mb-4"
+        />
+        <button className="bg-black text-white px-4 py-2 rounded-md">
+          Generate Caption + Hashtags
+        </button>
+
+        {pro && (
+          <div className="mt-4 text-green-600">
+            ✅ Pro features unlocked! More caption tones and advanced options coming soon.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
