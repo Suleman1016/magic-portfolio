@@ -1,0 +1,38 @@
+"use client";
+
+import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+export const ToneCustomizer = () => {
+  const [text, setText] = useState("");
+  const [tone, setTone] = useState("Friendly");
+  const [output, setOutput] = useState("");
+
+  const convertTone = () => {
+    setOutput(`${tone} tone: ${text}`);
+  };
+
+  return (
+    <div>
+      <Textarea
+        placeholder="Enter your message"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        className="mb-2"
+      />
+      <Select onValueChange={(value) => setTone(value)} defaultValue="Friendly">
+        <SelectTrigger>
+          <SelectValue placeholder="Select tone" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="Friendly">Friendly</SelectItem>
+          <SelectItem value="Professional">Professional</SelectItem>
+          <SelectItem value="Excited">Excited</SelectItem>
+        </SelectContent>
+      </Select>
+      <button onClick={convertTone} className="mt-2 bg-black text-white px-4 py-2 rounded">Apply Tone</button>
+      {output && <p className="mt-4 font-semibold">{output}</p>}
+    </div>
+  );
+};
